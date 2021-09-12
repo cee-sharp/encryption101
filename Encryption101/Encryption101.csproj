@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net5.0; netstandard2.1; netstandard2.0</TargetFrameworks>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>Easy to use encryption classes for the most common use cases</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Encryption AES MD5 SHA HMAC DES RSA</PackageTags>
+    <DebugType>none</DebugType>
+    <Authors>(c) 2021 Bernd Schulte</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <ApplicationIcon>C:\Projekte\EncryptionMadeSimple\Encryption101\Encryption101\lock.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="LICENSE" />
+    <None Remove="LICENSE.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </Content>
+    <Content Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
