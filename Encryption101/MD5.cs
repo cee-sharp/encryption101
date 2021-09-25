@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Encryption101.Tools;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,13 +13,13 @@ namespace Encryption101
         /// </summary>
         /// <param name="text">String to be hashed.</param>
         /// <returns>Hash as string.</returns>
-        public static string GetMd5Hash(string text)
+        public static string GetMd5Hash(string text, ByteConversion? conversion = null)
         {
             var textBytes = Encoding.UTF8.GetBytes(text);
             using ( var md5 = new MD5CryptoServiceProvider())
             {
                 var hash = md5.ComputeHash(textBytes);
-                var result = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
+                var result = hash.HashToText(conversion);
                 return result;
             }
         }

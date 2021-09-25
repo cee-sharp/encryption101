@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Encryption101.Tools;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -42,10 +43,11 @@ namespace Encryption101
         /// <param name="data"></param>
         /// <param name="publicKey"></param>
         /// <returns></returns>
-        public static string Encrypt(string data, string publicKey)
+        public static string Encrypt(string data, string publicKey, ByteConversion? conversion = null)
         {
             var dataArray = Encoding.UTF8.GetBytes(data);
-            var res = Convert.ToBase64String(Encrypt(dataArray, publicKey));
+            var bytes = Encrypt(dataArray, publicKey);
+            var res = bytes.EncryptedToText(conversion);
             return res;
         }
 
@@ -66,19 +68,20 @@ namespace Encryption101
         }
 
         /// <summary>
-        ///
+        /// Decrypt a string with RSA
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="privateKey"></param>
+        /// <param name="data">the encrypted data</param>
+        /// <param name="privateKey">your password</param>
+        /// <param name="conversion">optional byte conversion method</param>
         /// <returns></returns>
-        public static string Decrypt(string data, string privateKey)
+        public static string Decrypt(string data, string privateKey, ByteConversion? conversion = null)
         {
-            var dataArray = Convert.FromBase64String(data);
+            var dataArray = data.EncryptedToBytes(conversion);
             var res = Encoding.UTF8.GetString(Decrypt(dataArray, privateKey));
             return res;
         }
 
-        public static string SignData(string message, string privateKey)
+        public static string SignData(string message, string privateKey, ByteConversion? conversion = null)
         {
             //// The array to store the signed message in bytes
             byte[] signedBytes;
@@ -103,16 +106,24 @@ namespace Encryption101
                 }
             }
             //// Convert the a base64 string before returning
-            return Convert.ToBase64String(signedBytes);
+            return signedBytes.EncryptedToText(conversion);
         }
 
-        public static bool VerifyData(string originalMessage, string signedMessage, string publicKey)
+        /// <summary>
+        /// verify a signed string on behalf of a public key
+        /// </summary>
+        /// <param name="originalMessage">The text</param>
+        /// <param name="signedMessage">signed version of that text</param>
+        /// <param name="publicKey">public key used for signing</param>
+        /// <param name="conversion">optinal to enforce a specific byte conversion</param>
+        /// <returns></returns>
+        public static bool VerifyData(string originalMessage, string signedMessage, string publicKey, ByteConversion? conversion = null)
         {
 
             using (var rsa = new RSACryptoServiceProvider())
             {
                 var bytesToVerify = Encoding.UTF8.GetBytes(originalMessage);
-                var signedBytes = Convert.FromBase64String(signedMessage);
+                var signedBytes = signedMessage.EncryptedToBytes(conversion);
                 rsa.FromXmlString(publicKey);
                 return rsa.VerifyData(bytesToVerify, CryptoConfig.MapNameToOID("SHA512"), signedBytes);
             }

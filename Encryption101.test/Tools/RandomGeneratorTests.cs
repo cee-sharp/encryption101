@@ -13,7 +13,7 @@ namespace EasyEncryption.Tests.Tools
         [TestCaseSource(nameof(GenerateNumberTestCases))]
         public void GenerateNumber_WithCorrectNumberLength_ShouldReturnRandomNumberString(int numberLength)
         {
-            var result = RandomGenerator.GenerateNumber(numberLength);
+            var result = Randomizer.GenerateNumber(numberLength);
             Assert.IsNotNull(result);
             Assert.AreEqual(numberLength, result.Length);
         }
@@ -23,7 +23,7 @@ namespace EasyEncryption.Tests.Tools
         {
             try
             {
-                RandomGenerator.GenerateNumber(-1);
+                Randomizer.GenerateNumber(-1);
             }
             catch (ArgumentOutOfRangeException)
             {

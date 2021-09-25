@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Encryption101.Tools
 {
-    public class RandomGenerator
+    public class Randomizer
     {
         /// <summary>
         /// Generate random number with a given number of digits
